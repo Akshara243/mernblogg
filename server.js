@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const cors=require('cors');
+//const cors=require('cors');
 
 // Middleware
 app.use(express.json());
