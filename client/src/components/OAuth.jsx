@@ -11,21 +11,21 @@ export default function OAuth() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const handleGoogleClick = async () => {
-      const provider = new GoogleAuthProvider()
-      provider.setCustomParameters({ prompt: 'select_account' })
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
     
     try {
       const resultsFromGoogle = await signInWithPopup(auth, provider);
       
      const res = await fetch ('/api/auth/google', {
       method: 'POST',
-      headers: { 'Content-Type': 'applications/json' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: resultsFromGoogle.user.displayName,
         email: resultsFromGoogle.user.email,
         googlePhotoUrl: resultsFromGoogle.user.photoURL,
       }),
-     })
+     });
 
      const data = await res.json()
      if(res.ok)
