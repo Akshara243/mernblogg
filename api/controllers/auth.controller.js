@@ -55,7 +55,7 @@ export const signin = async (req, res, next) => {
       process.env.JWT_SECRET
     );
 
-    const { password: pass, ...rest } = validUser.toObject();
+    const { password: pass, ...rest } = validUser._doc;
 
     res
     .status(200)
@@ -103,4 +103,4 @@ export const google = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
