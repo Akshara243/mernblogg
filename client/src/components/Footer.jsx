@@ -75,5 +75,5 @@ export default function FooterCom() {
         </div>
         </div> 
     </Footer>
-  )
+  );
 }

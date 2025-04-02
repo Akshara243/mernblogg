@@ -70,14 +70,27 @@ export default function CreatePost() {
         }
     };
     const handleSubmit = async (e) => {
-      console.log('Sending post data:', formData);
+      e.preventDefault();
+     // console.log('Sending post data:', { title, category, content });
+      //const token = localStorage.getItem("token"); // Get the saved token
+      //  if (!token) {
+          //alert("You are not logged in! Please log in first.");
+      //    return;
+      //  }
+      //  const postData = {
+      //    title: formData.title|| "",
+      //    category: formData.category|| "uncategorized",
+      //    content: text|| "", // Make sure content is included
+      //    image: formData.image || "", 
+      //  };
 
-        e.preventDefault();
+        //e.preventDefault();
         try {
-          const res = await fetch('/api/post/create', {
+          const res = await fetch('http://localhost:5000/api/post/create', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              //"Authorization": `Bearer ${token}`, 
             },
             body: JSON.stringify(formData),
           });
@@ -86,6 +99,8 @@ export default function CreatePost() {
             setPublishError(data.message);
             return;
           }
+         // const data = await res.json();
+          console.log("Post Created Successfully:", data);
     
           if (res.ok) {
             setPublishError(null);
@@ -161,7 +176,7 @@ export default function CreatePost() {
                   )}       
         </form>
     </div>
-  )
+  );
 }
 
 

@@ -1,4 +1,4 @@
-import { Alert, Button, Modal, TextInput } from 'flowbite-react';
+import { Alert, Button, Modal,ModalBody, TextInput } from 'flowbite-react';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
@@ -25,6 +25,11 @@ const [formData, setFormData] = useState({});
 const filePickerRef = useRef();
 const dispatch = useDispatch();
 const token = currentUser?.token || localStorage.getItem('token');
+console.log("Retrieved Token:", token);
+
+if (!token) {
+    console.error("Token is missing! User might be logged out.");
+}
 
 const handleImageChange = (e) => {
   const file = e.target.files[0];
@@ -88,6 +93,14 @@ const handleChange = (e) => {
 
 
 const handleSubmit = async (e) => {
+  if (data.error === "Token expired or invalid") {
+    dispatch(signoutSuccess());
+    localStorage.removeItem("token");
+    alert("Session expired. Please log in again.");
+    navigate("/sign-in"); // Redirect user to login page
+}
+
+  
   e.preventDefault();
   setUpdateUserError(null);
   setUpdateUserSuccess(null);
@@ -100,32 +113,46 @@ const handleSubmit = async (e) => {
     setUpdateUserError('Please wait for image to upload');
     return;
   }
+  
   try {
+    //const token = currentUser?.token || localStorage.getItem("token");
+   // console.log("Token being sent:", token);
     dispatch(updateStart());
     const res = await fetch(`http://localhost:5000/api/user/update/${currentUser._id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
+        //Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(updatedData),
-    })
-    .then(res => {
-      if (!res.ok) {
-        return res.json().then(err => { throw new Error(err.message); });
-      }
-      return res.json();
-    })
-    .then(data => console.log("Profile updated:", data))
-    .catch(err => console.error("Update failed:", err));
+      body: JSON.stringify(formData),
+    });
+    //.then(res => {
+     // if (!res.ok) {
+     //   return res.json().then(err => { throw new Error(err.message); });
+     // }
+     // return res.json();
+    //})
+    //.then(data => console.log("Profile updated:", data))
+    //.catch(err => console.error("Update failed:", err));
 
-    const data = await res.json();
+    //const data = await res.json();
+
+    const text = await res.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = {}; // Handle empty response
+    }
+
+    console.log("Response Data:", data);
+
     if(!res.ok){
       dispatch(updateFailure(data.message));
       setUpdateUserError(data.message);
     }else{
       dispatch(updateSuccess(data));
-      setUpdateUserSuccess("User's profile updated successfully");
+      setTimeout(() => setUpdateUserSuccess("User's profile updated successfully"), 100);
     }
   } catch (error) {
     dispatch(updateFailure(error.messgae));
@@ -241,7 +268,7 @@ const handleSignout = async () => {
           )}
           {updateUserError && (
             <Alert color='failure' className='mt-5'>
-              {updateUserSuccess}
+              {updateUserError}
             </Alert>
           )}
           {error&& (

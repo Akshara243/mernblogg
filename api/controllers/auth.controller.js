@@ -17,7 +17,7 @@ export const signup = async(req, res, next)=> {
         next(errorHandler(400, 'All fields are required'));
     }
 
-      const hashedPassword = bcryptjs.hashSync(password,10);
+      const hashedPassword = bcryptjs.hashSync(password, 10);
 
       const newUser = new User({
         username,
@@ -51,7 +51,7 @@ export const signin = async (req, res, next) => {
       return next(errorHandler(400, 'Invalid password'));
     }
     const token = jwt.sign(
-      { id: validUser._id, isAdmin: validUser.isAdmin},
+      { id: validUser._id},
       process.env.JWT_SECRET
     );
 
@@ -76,7 +76,7 @@ export const google = async (req, res, next) => {
     const user = await User.findOne({email});
     if(user)
     {
-      const token = jwt.sign({id: user._id, isAdmin: user.isAdmin}, process.env.JWT_SECRET);
+      const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
       const {password, ...rest} = user._doc;
       res.status(200).cookie('access_token', token, {
         httpOnly:true,
@@ -91,7 +91,7 @@ export const google = async (req, res, next) => {
         profilePicture: googlePhotoUrl,        
       });
       await newUser.save();
-      const token = jwt.sign({ id: newUser._id, isAdmin: newUser.isAdmin }, process.env.JWT_SECRET);
+      const token = jwt.sign({ id: newUser._id}, process.env.JWT_SECRET);
       const { password, ...rest } = newUser._doc;
       res
         .status(200)

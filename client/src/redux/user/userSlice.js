@@ -4,11 +4,11 @@ const initialState = {
     currentUser: null,
     error: null,
     loading: false
-}
+};
 
 const userSlice = createSlice({
     name: 'user',
-    initialState,
+    initialState: { currentUser: null, loading: false, error: null },
     reducers:{
         signInStart: (state) => {
             state.loading = true;
@@ -18,6 +18,7 @@ const userSlice = createSlice({
             state.currentUser = action.payload;
             state.loading = false;
             state.error = null;
+            localStorage.setItem("token", action.payload.token); 
         },
         signInFailure: (state,action) => {
             state.loading = false;
@@ -53,6 +54,7 @@ const userSlice = createSlice({
             state.currentUser = null;
             state.error = null;
             state.loading = false;
+            localStorage.removeItem("token");  // Remove token
         },
 
     },
