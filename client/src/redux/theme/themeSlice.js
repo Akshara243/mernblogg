@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 
 const initialState = {
-    theme: 'light',
+    //theme: 'light',
+    theme: localStorage.getItem("theme") || 'light',
 };
 
 const themeSlice = createSlice({
@@ -11,6 +12,14 @@ const themeSlice = createSlice({
     reducers: {
         toggleTheme: (state) => {
             state.theme = state.theme === 'light' ? 'dark' : 'light';
+
+             // Update <body> class dynamically
+             document.body.classList.remove('light', 'dark');
+             document.body.classList.add(state.theme);
+ 
+             // Save theme preference
+             localStorage.setItem("theme", state.theme);
+
         },
     }
 });

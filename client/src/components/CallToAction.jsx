@@ -23,7 +23,7 @@ export default function CallToAction() {
         </a>
       </div>
       <div className='flex-1 p-7'>
-        <img src='https://media.geeksforgeeks.org/wp-content/cdn-uploads/20221114110410/Top-10-JavaScript-Project-Ideas-For-Beginners-2023.png' />
+        <img src='https://media.istockphoto.com/id/490183446/photo/responsive-design-mockup.jpg?s=612x612&w=0&k=20&c=lmo6f5MxGwORRPy-oh0RIAQJRBWua530mtPhW5UquUE=' />
       </div>
     </div>
   );
