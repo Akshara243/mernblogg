@@ -44,7 +44,7 @@ export default function CreatePost() {
                 setImageUploadError('Image upload failed');
                 setImageUploadProgress(null);
               },
-              () => {
+               () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                   setImageUploadProgress(null);
                   setImageUploadError(null);
@@ -126,7 +126,8 @@ export default function CreatePost() {
                     setFormData({ ...formData, title: e.target.value })
                   }
                   />
-                <Select   
+                <Select  
+                value={formData.category || "uncategorized"} 
                 onChange={(e) =>
                     setFormData({ ...formData, category: e.target.value })
                     }

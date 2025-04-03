@@ -43,6 +43,20 @@ export default function DashSidebar() {
     <Sidebar className='w-full md:w-56'>
       <Sidebar.Items>
         <Sidebar.ItemGroup className = 'flex flex-col gap-1'>
+
+          
+         {/* 🔹 User Profile Section */}
+        {currentUser && (
+            <div className="flex flex-col items-center p-4 border-b">
+              <img
+                src={currentUser.avatar || '/default-avatar.png'} // Fallback image
+                alt="User Avatar"
+                className="w-16 h-16 rounded-full mb-2"
+              />
+              <p className="text-lg font-semibold">{currentUser.username}</p>
+            </div>
+          )}
+
         {currentUser && (
             <Link to='/dashboard?tab=dash'>
               <Sidebar.Item
