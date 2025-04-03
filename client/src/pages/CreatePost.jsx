@@ -72,7 +72,10 @@ export default function CreatePost() {
     const handleSubmit = async (e) => {
       e.preventDefault();
      // console.log('Sending post data:', { title, category, content });
-      const token = localStorage.getItem("token"); // Get the saved token
+      //const token = localStorage.getItem("token"); // Get the saved token
+      const token = localStorage.getItem("token");
+      console.log("Auth Token:", token); // Debugging
+
       //  if (!token) {
           //alert("You are not logged in! Please log in first.");
       //    return;
